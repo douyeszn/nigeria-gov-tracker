@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { SECTORS } from '../data.js'
 import { ProgressBar, ShareButton, SectionHeading, PageShell, scoreColor, scoreLabel, SEVERITY } from '../components/Shared.jsx'
 
@@ -105,7 +106,17 @@ function SectorCard({ sector }) {
           <span style={{ fontSize: 10, color: 'var(--text-4)', fontFamily: 'var(--ff-mono)' }}>
             Source: {sector.source}
           </span>
-          <ShareButton label={sector.name} text={`Bayelsa ${sector.name}: score ${sector.score}/100 — ${sector.keyFailure}`} />
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <ShareButton label={sector.name} text={`Bayelsa ${sector.name}: score ${sector.score}/100 — ${sector.keyFailure}`} />
+            <Link to={`/sectors/${sector.id}`} style={{
+              fontSize: 11, fontFamily: 'var(--ff-mono)', color: 'var(--navy)',
+              textDecoration: 'none', padding: '4px 10px',
+              border: '1px solid var(--navy)', borderRadius: 4,
+              whiteSpace: 'nowrap',
+            }}>
+              Full Report →
+            </Link>
+          </div>
         </div>
       </div>
     </article>
