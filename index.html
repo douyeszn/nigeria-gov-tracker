@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bayelsa State — Governance Accountability Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        /* Navy palette — WH-inspired */
+        --navy:        #0D132D;
+        --navy-mid:    #1B2855;
+        --navy-light:  #2D4085;
+        --navy-tint:   #EEF1F8;
+
+        /* Nigerian green */
+        --green:       #008751;
+        --green-mid:   #006B41;
+        --green-light: #E8F5EE;
+        --green-tint:  #F0F9F4;
+
+        /* Alerts */
+        --amber:       #C97400;
+        --amber-bg:    #FFF8EC;
+        --amber-border:#F5C97A;
+
+        --red:         #B50000;
+        --red-bg:      #FFF2F2;
+        --red-border:  #F5AAAA;
+
+        --blue:        #1B4FC4;
+        --blue-bg:     #EEF3FC;
+        --blue-border: #A3BCEE;
+
+        /* Surface */
+        --bg:          #F2F4F8;
+        --surface:     #FFFFFF;
+        --surface-2:   #F8F9FC;
+
+        /* Typography */
+        --text-1:      #0D132D;
+        --text-2:      #3D4A60;
+        --text-3:      #7A8799;
+        --text-4:      #B0BACA;
+
+        /* Borders */
+        --border:      #D9DEE8;
+        --border-mid:  #C0CAD8;
+
+        --ff-serif:  'Instrument Serif', Georgia, serif;
+        --ff-sans:   'Instrument Sans', system-ui, sans-serif;
+        --ff-mono:   'IBM Plex Mono', 'Courier New', monospace;
+
+        --r:    4px;
+        --r-lg: 8px;
+        --shadow-sm: 0 1px 3px rgba(13,19,45,0.08), 0 1px 2px rgba(13,19,45,0.04);
+        --shadow:    0 4px 12px rgba(13,19,45,0.10), 0 2px 4px rgba(13,19,45,0.06);
+        --shadow-lg: 0 8px 24px rgba(13,19,45,0.12), 0 4px 8px rgba(13,19,45,0.06);
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        background: var(--bg);
+        color: var(--text-1);
+        font-family: var(--ff-sans);
+        font-size: 14px;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      ::-webkit-scrollbar { width: 5px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+
+      ::selection { background: #C7D9FF; color: var(--navy); }
+
+      #root { position: relative; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
