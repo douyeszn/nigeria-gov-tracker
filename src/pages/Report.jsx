@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { GOVERNOR, SECTORS, PROJECTS, TIMELINE, BRIGHT_SPOTS, GOVERNOR_WINS } from '../data.js'
+import { GOVERNOR, SECTORS, PROJECTS, TIMELINE, BRIGHT_SPOTS, GOVERNOR_WINS, PRIORITIES } from '../data.js'
 import { ScoreRing, StatBlock, SectionHeading, PageShell, scoreColor, scoreLabel, SEVERITY } from '../components/Shared.jsx'
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts'
 
@@ -14,8 +15,6 @@ const PAGE_CARDS = [
     desc: 'How Bayelsa earns money — FAAC, derivation, IGR, expenditure breakdown' },
   { to: '/oil-money',  icon: '⛽', color: '#B50000', title: 'Who Gets the Oil?',
     desc: 'Oil revenue flow, NNPC board composition, Ijaw representation gap' },
-  { to: '/corruption', icon: '⚖', color: '#6B3FA0', title: 'Corruption Tracker',
-    desc: 'EFCC cases, ICPC investigations, systemic budget failures across administrations' },
   { to: '/research',   icon: '📄', color: '#0D132D', title: 'Research Papers',
     desc: '7 peer-reviewed studies and reports on Bayelsa governance, oil, and environment' },
 ]
@@ -27,6 +26,138 @@ const ALERT_ITEMS = [
   { text: '₦45B+ unspent across Roads, Economy, and Environment in FY2024.', sev: 'red' },
   { text: 'Diri administration attempted to block ICPC investigation in 2022 — court ruled against.', sev: 'amber' },
 ]
+
+function PrioritiesSection() {
+  const [open, setOpen] = useState(false)
+  const [expanded, setExpanded] = useState(null)
+
+  return (
+    <div style={{ marginBottom: 36 }}>
+      {/* Collapsed header — always visible */}
+      <button onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        style={{
+          width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: open ? 'var(--r-lg) var(--r-lg) 0 0' : 'var(--r-lg)',
+          padding: '16px 20px', cursor: 'pointer',
+          boxShadow: 'var(--shadow-sm)', textAlign: 'left',
+        }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 18 }}>🎯</span>
+          <div>
+            <div style={{ fontFamily: 'var(--ff-serif)', fontSize: 18, color: 'var(--navy)', lineHeight: 1.1 }}>
+              Government Priorities
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 2 }}>
+              {PRIORITIES.length} recommended actions — ranked by urgency
+            </div>
+          </div>
+        </div>
+        <span style={{
+          fontFamily: 'var(--ff-mono)', fontSize: 11, color: 'var(--text-3)',
+          letterSpacing: '0.06em', transition: 'transform 0.2s',
+          transform: open ? 'rotate(180deg)' : 'none',
+          display: 'inline-block',
+        }}>▼</span>
+      </button>
+
+      {open && (
+        <div style={{
+          border: '1px solid var(--border)', borderTop: 'none',
+          borderRadius: '0 0 var(--r-lg) var(--r-lg)',
+          background: 'var(--surface-2)',
+          padding: '4px 0 8px',
+        }}>
+          {PRIORITIES.map((p, i) => {
+            const isOpen = expanded === p.rank
+            const urgencyStyle = p.urgency === 'URGENT'
+              ? { bg: '#FFF2F2', border: '#F5AAAA', text: '#B50000' }
+              : p.urgency === 'HIGH'
+              ? { bg: '#FFF8EC', border: '#F5C97A', text: '#C97400' }
+              : { bg: '#EEF3FC', border: '#A3BCEE', text: '#1B4FC4' }
+
+            return (
+              <div key={p.rank} style={{
+                margin: '8px 12px',
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: 'var(--r-lg)', overflow: 'hidden',
+              }}>
+                <div style={{ height: 3, background: p.color }} />
+                {/* Row — always visible */}
+                <button onClick={() => setExpanded(isOpen ? null : p.rank)}
+                  aria-expanded={isOpen}
+                  style={{
+                    width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+                    padding: '13px 16px', background: 'transparent', border: 'none',
+                    cursor: 'pointer', textAlign: 'left',
+                  }}>
+                  <span style={{
+                    width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
+                    background: `${p.color}18`, border: `1px solid ${p.color}40`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'var(--ff-mono)', fontSize: 12, fontWeight: 700, color: p.color,
+                  }}>{p.rank}</span>
+                  <span style={{ fontSize: 15 }}>{p.icon}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--navy)', lineHeight: 1.3 }}>{p.title}</div>
+                    <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                      <span style={{
+                        fontSize: 9, fontFamily: 'var(--ff-mono)', letterSpacing: '0.08em',
+                        padding: '1px 6px', borderRadius: 3,
+                        background: urgencyStyle.bg, border: `1px solid ${urgencyStyle.border}`, color: urgencyStyle.text,
+                      }}>{p.urgency}</span>
+                      <span style={{
+                        fontSize: 9, fontFamily: 'var(--ff-mono)', letterSpacing: '0.08em',
+                        padding: '1px 6px', borderRadius: 3,
+                        background: 'var(--navy-tint)', border: '1px solid var(--border)', color: 'var(--navy)',
+                      }}>{p.sector}</span>
+                    </div>
+                  </div>
+                  <span style={{
+                    fontFamily: 'var(--ff-mono)', fontSize: 10, color: 'var(--text-4)',
+                    transition: 'transform 0.2s', display: 'inline-block',
+                    transform: isOpen ? 'rotate(180deg)' : 'none',
+                  }}>▼</span>
+                </button>
+
+                {/* Expanded detail */}
+                {isOpen && (
+                  <div style={{ padding: '0 16px 16px', borderTop: '1px solid var(--border)' }}>
+                    <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7, margin: '12px 0 10px' }}>
+                      <strong style={{ color: 'var(--text-1)' }}>Why it matters: </strong>{p.why}
+                    </div>
+                    <div style={{
+                      background: 'var(--surface-2)', borderLeft: `3px solid ${p.color}`,
+                      borderRadius: '0 var(--r) var(--r) 0',
+                      padding: '10px 14px', marginBottom: 10,
+                      fontSize: 13, color: 'var(--text-1)', lineHeight: 1.6,
+                    }}>
+                      <strong style={{ fontSize: 10, fontFamily: 'var(--ff-mono)', color: 'var(--text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
+                        Recommended Action
+                      </strong>
+                      {p.action}
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                      <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.5 }}>
+                        <span style={{ fontSize: 10, fontFamily: 'var(--ff-mono)', color: 'var(--text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: 3 }}>Expected Impact</span>
+                        {p.impact}
+                      </div>
+                      <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.5 }}>
+                        <span style={{ fontSize: 10, fontFamily: 'var(--ff-mono)', color: 'var(--text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: 3 }}>Estimated Cost</span>
+                        <strong style={{ color: p.color }}>{p.cost}</strong>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function Report() {
   const scoreC = scoreColor(GOVERNOR.overallScore)
@@ -82,10 +213,10 @@ export default function Report() {
             </div>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: `${scoreC}22`, border: `1px solid ${scoreC}55`,
+              background: '#FFF8EC', border: '1px solid #F5C97A',
               borderRadius: 4, padding: '4px 12px',
             }}>
-              <span style={{ fontFamily: 'var(--ff-mono)', fontSize: 10, color: scoreC, letterSpacing: '0.1em' }}>
+              <span style={{ fontFamily: 'var(--ff-mono)', fontSize: 10, color: '#C97400', letterSpacing: '0.1em' }}>
                 OVERALL: {sLabel}
               </span>
             </div>
@@ -272,6 +403,9 @@ export default function Report() {
           ))}
         </div>
       </div>
+
+      {/* ── PRIORITIES ── */}
+      <PrioritiesSection />
 
       {/* ── BRIGHT SPOTS + WINS ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24, marginBottom: 36 }}>

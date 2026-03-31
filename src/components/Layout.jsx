@@ -7,8 +7,8 @@ const NAV_LINKS = [
   { to: '/projects',   label: 'Projects'              },
   { to: '/revenue',    label: 'Revenue'               },
   { to: '/oil-money',  label: 'Oil Money'             },
-  { to: '/corruption', label: 'Corruption'            },
   { to: '/research',   label: 'Research'              },
+  { to: '/cabinet',    label: 'Cabinet'               },
 ]
 
 export default function Layout() {
